@@ -1,0 +1,6 @@
+.DS_Store
+.*.swp
+/.env
+/npm-debug.log
+/node_modules
+/log/*.log
