@@ -2,7 +2,7 @@
 
 Web API to Search Documentations from Middleman Site
 
-[![Circle CI](https://circleci.com/gh/kaizenplatform/doc-search-api.svg?style=svg&circle-token=26b2fc49c822c2255a676138f6defae6d30c467c)](https://circleci.com/gh/kaizenplatform/doc-search-api)
+[![Circle CI](https://circleci.com/gh/kaizenplatform/doc-search-api/tree/master.svg?style=svg&circle-token=26b2fc49c822c2255a676138f6defae6d30c467c)](https://circleci.com/gh/kaizenplatform/doc-search-api/tree/master)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
