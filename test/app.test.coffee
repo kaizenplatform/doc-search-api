@@ -9,7 +9,7 @@ describe 'app', ->
   isExpected = -> expect subject()
 
   beforeEach ->
-    app = require '../app'
+    app = require '../app.coffee'
     currentTimestamp = -> 1425648528777
     timestamp = -> currentTimestamp()
     sinon.stub app, 'getTimestamp', -> currentTimestamp()
