@@ -71,51 +71,66 @@ describe 'app', ->
       it 'imports with keys by locale', (done) ->
         app.redis.keys 'doc:test:*', (err, res) ->
           subject = -> res.sort()
-          isExpected().to.eql ['doc:test:en', 'doc:test:ja']
-          do done
+          try
+            isExpected().to.eql ['doc:test:en', 'doc:test:ja']
+            do done
+          catch e
+            done e
       it 'imports sitemap (en)', (done) ->
         app.redis.smembers 'doc:test:en', (err, res) ->
           subject = -> res.sort()
-          isExpected().to.eql [
-            '/en/test/content1\tContent 1\tContent 1 Desc\tContent 1 Body'
-            '/en/test/content2\tContent 2\tContent 2 Desc\tContent 2 Body'
-            '/en/test/content3\tContent 3\tContent 3 Desc\tContent 3 Body'
-          ]
-          do done
+          try
+            isExpected().to.eql [
+              '/en/test/content1\tContent 1\tcontent 1\tcontent 1 desc\tcontent 1 body'
+              '/en/test/content2\tContent 2\tcontent 2\tcontent 2 desc\tcontent 2 body'
+              '/en/test/content3\tContent 3\tcontent 3\tcontent 3 desc\tcontent 3 body'
+            ]
+            do done
+          catch e
+            done e
       it 'imports sitemap (ja)', (done) ->
         app.redis.smembers 'doc:test:ja', (err, res) ->
           subject = -> res.sort()
-          isExpected().to.eql [
-            '/ja/test/content1\tContent 1\tContent 1 Desc\tContent 1 Body'
-            '/ja/test/content2\tContent 2\tContent 2 Desc\tContent 2 Body'
-            '/ja/test/content3\tContent 3\tContent 3 Desc\tContent 3 Body'
-          ]
-          do done
+          try
+            isExpected().to.eql [
+              '/ja/test/content1\tContent 1\tcontent 1\tcontent 1 desc\tcontent 1 body'
+              '/ja/test/content2\tContent 2\tcontent 2\tcontent 2 desc\tcontent 2 body'
+              '/ja/test/content3\tContent 3\tcontent 3\tcontent 3 desc\tcontent 3 body'
+            ]
+            do done
+          catch e
+            done e
 
     describe 'searchSitemap', ->
       beforeEach -> app.importSitemap sitemapJSON()
       it 'callbacks single page',(done)  ->
-        app.searchSitemap 'en', 'tent 1', (err, res) ->
-          expect(err).to.be null
-          expect(res).to.eql [
-            { url: '/en/test/content1', title: 'Content 1' }
-          ]
-          do done
+        app.searchSitemap 'en', 'tENt 1', (err, res) ->
+          try
+            expect(err).to.be null
+            expect(res).to.eql [
+              { url: '/en/test/content1', title: 'Content 1' }
+            ]
+            do done
+          catch e
+            done e
 
       it 'callbacks multiple pages',(done)  ->
-        app.searchSitemap 'ja', 'tent', (err, res) ->
-          expect(err).to.be null
-          expect(res).to.eql [
-            { url: '/ja/test/content1', title: 'Content 1' }
-            { url: '/ja/test/content2', title: 'Content 2' }
-            { url: '/ja/test/content3', title: 'Content 3' }
-          ]
-          do done
+        app.searchSitemap 'ja', 'tENt', (err, res) ->
+          try
+            expect(err).to.be null
+            expect(res).to.eql [
+              { url: '/ja/test/content1', title: 'Content 1' }
+              { url: '/ja/test/content2', title: 'Content 2' }
+              { url: '/ja/test/content3', title: 'Content 3' }
+            ]
+            do done
+          catch e
+            done e
 
   describe 'routing', ->
     describe 'GET /', ->
       beforeEach ->
-        query = -> '?q=tent&lang=ja'
+        query = -> '?q=tENt&lang=ja'
         subject = -> request(app).get "/#{query()}"
       describe 'missing parameter', ->
         beforeEach ->

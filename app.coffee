@@ -52,13 +52,13 @@ app.importSitemap = (sitemap) ->
     redis.del key
     set = [key]
     for {url, description, title, body} in pages
-      set.push [url, title, description, body].join "\t"
+      set.push [url, title, ''].join("\t") + [title, description, body].join("\t").toLowerCase()
     redis.sadd set, redis.print
 
 app.searchSitemap = (lang, query, callback) ->
   env = process.env.NODE_ENV || 'development'
   key = "doc:#{env}:#{lang}"
-  redis.sscan [key, 0, 'MATCH', "*#{query}*", 'COUNT', 1000], (err, res) ->
+  redis.sscan [key, 0, 'MATCH', "*#{query.toLowerCase()}*", 'COUNT', 1000], (err, res) ->
     return callback err, null if err?
     pages = []
     for item in res[1].sort()
