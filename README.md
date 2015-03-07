@@ -43,6 +43,26 @@ GET /?q=...&lang=ja
 POST /rebuild -d 'token=...&timestamp=...'
 ```
 
+## Example
+
+### Triggering rebuild from Rake task
+
+```rb
+desc 'Request rebuilding search index'
+task :rebuild_sitemap => [:env] do
+  if api_base = ENV['DOC_SEARCH_API_BASE']
+    require 'digest/sha1'
+    require 'json'
+    secret = ENV['REBUILD_TOKEN_SECRET']
+    ts = (Time.now.to_f * 1000).to_i.to_s
+    token = Digest::SHA1.hexdigest ts + secret
+    res = %x{curl -XPOST #{api_base}/rebuild -d 'token=#{token}&timestamp=#{ts}'}
+    json = JSON.parse res
+    raise json['message'] if json['message']
+  end
+end
+```
+
 Author
 ------
 
