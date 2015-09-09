@@ -90,7 +90,7 @@ app.post '/rebuild', (req, res) ->
     console.error 'SITEMAP_URL is not configured'
     res.status 500
     return
-  request.get {url, json: yes}, (e, r, json) ->
+  request.get {url, json: yes, gzip: true}, (e, r, json) ->
     app.importSitemap json
     res.json success: yes
 
